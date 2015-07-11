@@ -1,0 +1,123 @@
+--- Raw source ---
+(a, b) {
+  return a + b;
+}
+
+
+--- Unoptimized code ---
+kind = FUNCTION
+name = add
+Instructions (size = 132)
+0x39803a80d160     0  488b4c2418     REX.W movq rcx,[rsp+0x18]
+0x39803a80d165     5  493b4da8       REX.W cmpq rcx,[r13-0x58]
+0x39803a80d169     9  750d           jnz 24  (0x39803a80d178)
+0x39803a80d16b    11  488b4e27       REX.W movq rcx,[rsi+0x27]
+0x39803a80d16f    15  488b492f       REX.W movq rcx,[rcx+0x2f]
+0x39803a80d173    19  48894c2418     REX.W movq [rsp+0x18],rcx
+0x39803a80d178    24  55             push rbp
+0x39803a80d179    25  4889e5         REX.W movq rbp,rsp
+0x39803a80d17c    28  56             push rsi
+0x39803a80d17d    29  57             push rdi
+0x39803a80d17e    30  493ba598070000 REX.W cmpq rsp,[r13+0x798]
+0x39803a80d185    37  7305           jnc 44  (0x39803a80d18c)
+0x39803a80d187    39  e8945bf2ff     call StackCheck  (0x39803a732d20)    ;; debug: statement 167
+                                                             ;; code: BUILTIN
+0x39803a80d18c    44  ff7518         push [rbp+0x18]
+0x39803a80d18f    47  488b4510       REX.W movq rax,[rbp+0x10]
+0x39803a80d193    51  5a             pop rdx
+0x39803a80d194    52  e8c7c9f0ff     call 0x39803a719b60     ;; debug: statement 178
+                                                             ;; debug: position 187
+                                                             ;; code: BINARY_OP_IC, UNINITIALIZED (id = 8)
+0x39803a80d199    57  90             nop
+0x39803a80d19a    58  48bba160b0df3c020000 REX.W movq rbx,0x23cdfb060a1    ;; object: 0x23cdfb060a1 Cell for 6144
+0x39803a80d1a4    68  83430bd1       addl [rbx+0xb],0xd1
+0x39803a80d1a8    72  791f           jns 105  (0x39803a80d1c9)
+0x39803a80d1aa    74  50             push rax
+0x39803a80d1ab    75  e8f05bf2ff     call InterruptCheck  (0x39803a732da0)    ;; code: BUILTIN
+0x39803a80d1b0    80  58             pop rax
+0x39803a80d1b1    81  48bba160b0df3c020000 REX.W movq rbx,0x23cdfb060a1    ;; object: 0x23cdfb060a1 Cell for 6144
+0x39803a80d1bb    91  49ba0000000000180000 REX.W movq r10,0x180000000000
+0x39803a80d1c5   101  4c895307       REX.W movq [rbx+0x7],r10
+0x39803a80d1c9   105  488be5         REX.W movq rsp,rbp      ;; debug: statement 192
+                                                             ;; js return
+0x39803a80d1cc   108  5d             pop rbp
+0x39803a80d1cd   109  c21800         ret 0x18
+0x39803a80d1d0   112  cc             int3
+0x39803a80d1d1   113  cc             int3
+0x39803a80d1d2   114  cc             int3
+0x39803a80d1d3   115  cc             int3
+0x39803a80d1d4   116  cc             int3
+0x39803a80d1d5   117  cc             int3
+0x39803a80d1d6   118  498b45a8       REX.W movq rax,[r13-0x58]
+0x39803a80d1da   122  e9bbffffff     jmp 58  (0x39803a80d19a)
+0x39803a80d1df   127  90             nop
+
+Deoptimization Output Data (deopt points = 5)
+ast id        pc  state
+     2        30  NO_REGISTERS
+     3        30  NO_REGISTERS
+     4        47  NO_REGISTERS
+     6        51  TOS_REG
+     8        58  TOS_REG
+
+Back edges (size = 0)
+ast_id  pc_offset  loop_depth
+
+RelocInfo (size = 21)
+0x39803a80d187  statement position  (167)
+0x39803a80d188  code target (BUILTIN)  (0x39803a732d20)
+0x39803a80d194  statement position  (178)
+0x39803a80d194  position  (187)
+0x39803a80d195  code target with id (BINARY_OP_IC)  (0x39803a719b60) (id=8)
+0x39803a80d19c  embedded object  (0x23cdfb060a1 Cell for 6144)
+0x39803a80d1ac  code target (BUILTIN)  (0x39803a732da0)
+0x39803a80d1b3  embedded object  (0x23cdfb060a1 Cell for 6144)
+0x39803a80d1c9  statement position  (192)
+0x39803a80d1c9  js return
+
+--- Optimized code ---
+optimization_id = 132
+source_position = 167
+kind = OPTIMIZED_FUNCTION
+name = add
+stack_slots = 1
+Instructions (size = 98)
+0x39803a80d360     0  55             push rbp
+0x39803a80d361     1  4889e5         REX.W movq rbp,rsp
+0x39803a80d364     4  56             push rsi
+0x39803a80d365     5  57             push rdi
+0x39803a80d366     6  4883ec08       REX.W subq rsp,0x8
+0x39803a80d36a    10  488b45f8       REX.W movq rax,[rbp-0x8]
+0x39803a80d36e    14  488945e8       REX.W movq [rbp-0x18],rax
+0x39803a80d372    18  488bf0         REX.W movq rsi,rax
+0x39803a80d375    21  493ba598070000 REX.W cmpq rsp,[r13+0x798]
+0x39803a80d37c    28  7305           jnc 35  (0x39803a80d383)
+0x39803a80d37e    30  e89d59f2ff     call StackCheck  (0x39803a732d20)    ;; code: BUILTIN
+0x39803a80d383    35  488b75e8       REX.W movq rsi,[rbp-0x18]
+0x39803a80d387    39  488b5518       REX.W movq rdx,[rbp+0x18]
+0x39803a80d38b    43  488b4510       REX.W movq rax,[rbp+0x10]
+0x39803a80d38f    47  90             nop
+0x39803a80d390    48  e8cbc7f0ff     call 0x39803a719b60     ;; debug: position 187
+                                                             ;; code: BINARY_OP_IC, UNINITIALIZED
+0x39803a80d395    53  90             nop
+0x39803a80d396    54  488be5         REX.W movq rsp,rbp
+0x39803a80d399    57  5d             pop rbp
+0x39803a80d39a    58  c21800         ret 0x18
+0x39803a80d39d    61  660f1f440000   nop
+0x39803a80d3a3    67  90             nop
+
+Deoptimization Input Data (deopt points = 2)
+ index  ast id    argc     pc
+     0       3       0     35
+     1       8       0     54
+
+Safepoints (size = 30)
+0x39803a80d383    35  1 (sp -> fp)       0
+0x39803a80d395    53  0 (sp -> fp)       1
+
+RelocInfo (size = 9)
+0x39803a80d37f  code target (BUILTIN)  (0x39803a732d20)
+0x39803a80d390  position  (187)
+0x39803a80d391  code target (BINARY_OP_IC)  (0x39803a719b60)
+
+--- End code ---

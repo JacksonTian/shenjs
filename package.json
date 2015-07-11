@@ -1,0 +1,17 @@
+{
+  "name": "node-profiler-demo",
+  "version": "1.0.0",
+  "description": "node profiler demo",
+  "scripts": {
+    "test": "make test"
+  },
+  "keywords": [
+    "Profiler",
+    "Web"
+  ],
+  "author": "Jackson Tian",
+  "license": "MIT",
+  "dependencies": {
+    "benchmark": "~1.0.0"
+  }
+}
